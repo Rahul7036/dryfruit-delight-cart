@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DryFruit Delight - Premium Dry Fruits & Nuts</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="logo">
+                <i class="fas fa-seedling"></i>
+                <h1>DryFruit Delight</h1>
+            </div>
+            <nav class="nav">
+                <ul>
+                    <li><a href="#home">Home</a></li>
+                    <li><a href="#products">Products</a></li>
+                    <li><a href="#about">About</a></li>
+                    <li><a href="#contact">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="cart-icon" onclick="toggleCart()">
+                <i class="fas fa-shopping-cart"></i>
+                <span class="cart-count" id="cartCount">0</span>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section class="hero" id="home">
+        <div class="container">
+            <div class="hero-content">
+                <h1>Premium Quality Dry Fruits & Nuts</h1>
+                <p>Discover the finest selection of organic dry fruits, nuts, and seeds. Handpicked for quality and taste.</p>
+                <a href="#products" class="cta-button">Shop Now</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Products Section -->
+    <section class="products" id="products">
+        <div class="container">
+            <h2>Our Premium Collection</h2>
+            <div class="products-grid" id="productsGrid">
+                <!-- Products will be dynamically loaded here -->
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>About DryFruit Delight</h2>
+                    <p>We are passionate about bringing you the finest quality dry fruits and nuts from around the world. Our products are carefully selected, ensuring premium taste and nutritional value.</p>
+                    <p>From almonds to cashews, raisins to dates, we offer a wide variety of healthy snacks that are perfect for any occasion.</p>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1542838132-92c53300491e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1000&q=80" alt="Premium Dry Fruits">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact" id="contact">
+        <div class="container">
+            <h2>Contact Us</h2>
+            <div class="contact-content">
+                <div class="contact-info">
+                    <div class="contact-item">
+                        <i class="fas fa-phone"></i>
+                        <div>
+                            <h3>Phone</h3>
+                            <p>+91 98765 43210</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-envelope"></i>
+                        <div>
+                            <h3>Email</h3>
+                            <p>info@dryfruitdelight.com</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <i class="fas fa-map-marker-alt"></i>
+                        <div>
+                            <h3>Address</h3>
+                            <p>123 Dry Fruit Street, Nut City, NC 12345</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="contact-form">
+                    <form id="contactForm">
+                        <input type="text" placeholder="Your Name" required>
+                        <input type="email" placeholder="Your Email" required>
+                        <textarea placeholder="Your Message" rows="5" required></textarea>
+                        <button type="submit" class="submit-btn">Send Message</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Shopping Cart Sidebar -->
+    <div class="cart-sidebar" id="cartSidebar">
+        <div class="cart-header">
+            <h3>Shopping Cart</h3>
+            <button class="close-cart" onclick="toggleCart()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <!-- Cart items will be displayed here -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <span>Total:</span>
+                <span id="cartTotal">₹0.00</span>
+            </div>
+            <button class="checkout-btn" onclick="checkout()">
+                <i class="fab fa-whatsapp"></i>
+                Checkout via WhatsApp
+            </button>
+        </div>
+    </div>
+
+    <!-- Cart Overlay -->
+    <div class="cart-overlay" id="cartOverlay" onclick="toggleCart()"></div>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>DryFruit Delight</h3>
+                    <p>Premium quality dry fruits and nuts for a healthy lifestyle.</p>
+                </div>
+                <div class="footer-section">
+                    <h3>Quick Links</h3>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#products">Products</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Follow Us</h3>
+                    <div class="social-links">
+                        <a href="#"><i class="fab fa-facebook"></i></a>
+                        <a href="#"><i class="fab fa-instagram"></i></a>
+                        <a href="#"><i class="fab fa-twitter"></i></a>
+                        <a href="#"><i class="fab fa-whatsapp"></i></a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 DryFruit Delight. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Admin Panel for Image Upload -->
+    <div class="admin-panel" id="adminPanel">
+        <div class="admin-header">
+            <h3>Admin Panel</h3>
+            <button class="close-admin" onclick="toggleAdmin()">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+        <div class="admin-content">
+            <div class="upload-section">
+                <h4>Add New Product</h4>
+                <form id="productForm">
+                    <input type="text" id="productName" placeholder="Product Name" required>
+                    <input type="number" id="productPrice" placeholder="Price (₹)" step="0.01" required>
+                    <input type="text" id="productImage" placeholder="Image URL" required>
+                    <textarea id="productDescription" placeholder="Product Description" rows="3"></textarea>
+                    <button type="submit" class="upload-btn">Add Product</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Admin Toggle Button -->
+    <button class="admin-toggle" onclick="toggleAdmin()">
+        <i class="fas fa-cog"></i>
+    </button>
+
+    <script src="script.js"></script>
+</body>
+</html> 
