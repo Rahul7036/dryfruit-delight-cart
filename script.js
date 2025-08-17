@@ -51,6 +51,11 @@ document.addEventListener('DOMContentLoaded', function() {
     loadCartFromStorage();
     updateCartCount();
     
+    // Initialize mobile features
+    initMobileFeatures();
+    optimizeForMobile();
+    optimizeMobilePerformance();
+    
     // Contact form submission
     document.getElementById('contactForm').addEventListener('submit', function(e) {
         e.preventDefault();
@@ -62,6 +67,14 @@ document.addEventListener('DOMContentLoaded', function() {
     document.getElementById('productForm').addEventListener('submit', function(e) {
         e.preventDefault();
         addNewProduct();
+    });
+    
+    // Handle window resize for mobile optimization
+    window.addEventListener('resize', function() {
+        if (window.innerWidth <= 768) {
+            optimizeForMobile();
+            optimizeMobilePerformance();
+        }
     });
 });
 
@@ -436,21 +449,49 @@ document.addEventListener('keydown', function(e) {
     }
 });
 
-// Add touch gestures for mobile
+// Enhanced mobile touch interactions
 let touchStartX = 0;
+let touchStartY = 0;
 let touchEndX = 0;
+let touchEndY = 0;
+let touchStartTime = 0;
+let isScrolling = false;
 
 document.addEventListener('touchstart', function(e) {
     touchStartX = e.changedTouches[0].screenX;
+    touchStartY = e.changedTouches[0].screenY;
+    touchStartTime = Date.now();
+    isScrolling = false;
+});
+
+document.addEventListener('touchmove', function(e) {
+    const touchMoveY = e.changedTouches[0].screenY;
+    const touchMoveX = e.changedTouches[0].screenX;
+    
+    // Detect if user is scrolling vertically
+    if (Math.abs(touchMoveY - touchStartY) > Math.abs(touchMoveX - touchStartX)) {
+        isScrolling = true;
+    }
 });
 
 document.addEventListener('touchend', function(e) {
+    if (isScrolling) return; // Don't handle swipe if scrolling
+    
     touchEndX = e.changedTouches[0].screenX;
-    handleSwipe();
+    touchEndY = e.changedTouches[0].screenY;
+    const touchDuration = Date.now() - touchStartTime;
+    
+    handleSwipe(touchDuration);
 });
 
-function handleSwipe() {
+function handleSwipe(touchDuration) {
     const swipeThreshold = 50;
+    const swipeDistance = Math.abs(touchEndX - touchStartX);
+    const swipeSpeed = swipeDistance / touchDuration;
+    
+    // Only handle swipes that are fast enough and long enough
+    if (swipeDistance < swipeThreshold || swipeSpeed < 0.3) return;
+    
     const cartSidebar = document.getElementById('cartSidebar');
     const adminPanel = document.getElementById('adminPanel');
     
@@ -458,11 +499,144 @@ function handleSwipe() {
         // Swipe left - close cart if open
         if (cartSidebar.classList.contains('active')) {
             toggleCart();
+            showMobileNotification('Cart closed');
         }
     } else if (touchEndX > touchStartX + swipeThreshold) {
         // Swipe right - close admin if open
         if (adminPanel.classList.contains('active')) {
             toggleAdmin();
+            showMobileNotification('Admin panel closed');
         }
+    }
+}
+
+// Mobile-specific features
+function initMobileFeatures() {
+    // Add mobile-specific event listeners
+    if (window.innerWidth <= 768) {
+        // Prevent zoom on double tap for buttons
+        const buttons = document.querySelectorAll('button, .add-to-cart, .cta-button');
+        buttons.forEach(button => {
+            button.addEventListener('touchend', function(e) {
+                e.preventDefault();
+                this.click();
+            });
+        });
+        
+        // Add haptic feedback for mobile devices
+        if ('vibrate' in navigator) {
+            const clickableElements = document.querySelectorAll('.add-to-cart, .checkout-btn, .submit-btn, .upload-btn');
+            clickableElements.forEach(element => {
+                element.addEventListener('click', function() {
+                    navigator.vibrate(50);
+                });
+            });
+        }
+        
+        // Optimize images for mobile
+        const images = document.querySelectorAll('img');
+        images.forEach(img => {
+            img.addEventListener('load', function() {
+                if (window.innerWidth <= 768) {
+                    this.style.imageRendering = 'optimizeQuality';
+                }
+            });
+        });
+    }
+}
+
+// Mobile notification system
+function showMobileNotification(message) {
+    if (window.innerWidth <= 768) {
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+            position: fixed;
+            bottom: 80px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #2c5530;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+            z-index: 10000;
+            font-size: 14px;
+            font-weight: 500;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+            max-width: 90%;
+            text-align: center;
+        `;
+        notification.textContent = message;
+        
+        document.body.appendChild(notification);
+        
+        // Animate in
+        setTimeout(() => {
+            notification.style.opacity = '1';
+        }, 100);
+        
+        // Remove after 2 seconds
+        setTimeout(() => {
+            notification.style.opacity = '0';
+            setTimeout(() => {
+                document.body.removeChild(notification);
+            }, 300);
+        }, 2000);
+    }
+}
+
+// Mobile-optimized cart interactions
+function optimizeForMobile() {
+    if (window.innerWidth <= 768) {
+        // Make cart items more touch-friendly
+        const cartItems = document.querySelectorAll('.cart-item');
+        cartItems.forEach(item => {
+            item.style.minHeight = '60px';
+        });
+        
+        // Optimize quantity buttons for mobile
+        const quantityBtns = document.querySelectorAll('.quantity-btn');
+        quantityBtns.forEach(btn => {
+            btn.style.minWidth = '44px';
+            btn.style.minHeight = '44px';
+        });
+        
+        // Make checkout button more prominent on mobile
+        const checkoutBtn = document.querySelector('.checkout-btn');
+        if (checkoutBtn) {
+            checkoutBtn.style.fontSize = '16px';
+            checkoutBtn.style.padding = '15px';
+        }
+    }
+}
+
+// Handle mobile orientation changes
+window.addEventListener('orientationchange', function() {
+    setTimeout(() => {
+        // Recalculate layouts after orientation change
+        if (window.innerWidth <= 768) {
+            optimizeForMobile();
+        }
+    }, 100);
+});
+
+// Mobile performance optimizations
+function optimizeMobilePerformance() {
+    if (window.innerWidth <= 768) {
+        // Reduce animations on mobile for better performance
+        const animatedElements = document.querySelectorAll('.product-card, .cart-item');
+        animatedElements.forEach(element => {
+            element.style.transition = 'transform 0.2s ease, box-shadow 0.2s ease';
+        });
+        
+        // Optimize scroll performance
+        document.body.style.webkitOverflowScrolling = 'touch';
+        
+        // Reduce hover effects on mobile
+        const hoverElements = document.querySelectorAll('.product-card:hover');
+        hoverElements.forEach(element => {
+            element.style.transform = 'none';
+        });
     }
 } 
